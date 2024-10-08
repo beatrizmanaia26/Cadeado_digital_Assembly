@@ -1,10 +1,11 @@
 ; --- Mapeamento de Hardware (8051) ---
     RS      equ     P1.3    ;Reg Select ligado em P1.3
     EN      equ     P1.2    ;Enable ligado em P1.2
+
 org 0000h
 LJMP MAIN
 
-
+;o que aparece no display da tela inicial para pessoa digitar a senha e aparecer nos ____
 ESPACOSENHA:
   DB "____";senha com 4 digitos
   DB 00h ;declara string, ler ate final
@@ -14,8 +15,8 @@ BLOQUEADO:
 
 org 0080h;espaço pra interrupção
 MAIN:
-;SENHA INICIAL
-	MOV 30H, #1
+;SENHA INICIAL ;colocamos como "senha de fabrica" 1111 na memoria, do endereço 30 ao 33
+    MOV 30H, #1
     MOV 31H, #1
     MOV 32H, #1
     MOV 33H, #1
@@ -34,9 +35,8 @@ MAIN:
 	MOV 4AH, #'2'
 	MOV 4BH, #'1'	  
 
-;tela de adivinhar a senha
    ACALL lcd_init ;inicia lcd
-	LCALL TELA_INICIAL
+	LCALL TELA_INICIAL ;chama funcao que escreve no display
 ;posiciona novamente no primeiro espaço para a senha
 		MOV A, #06h ;centralizado
 		ACALL posicionaCursor
@@ -53,16 +53,15 @@ MAIN:
 		DJNZ R0, ESPERA_VE_PRESSIONADO ;DECREMENTA R0 E VOLTA
 	JMP MAIN
 
-
 TELA_INICIAL:
-	MOV A, #06h ;centralizado
-	ACALL posicionaCursor
-	MOV DPTR,#ESPACOSENHA
+	MOV A, #06h ;centraliza
+	ACALL posicionaCursor 
+	MOV DPTR,#ESPACOSENHA ;chama o que será escrito
 	ACALL escreveStringROM
-	MOV A, #43h
-    ACALL posicionaCursor
-	MOV DPTR,#BLOQUEADO
-    ACALL escreveStringROM
+	MOV A, #43h ;posiciona para a linha seguinte
+        ACALL posicionaCursor ;chama cursor para comecar a escrever no endereço 43h
+	MOV DPTR,#BLOQUEADO 
+        ACALL escreveStringROM ,escreve o que ta no BLOQUEADO
 	RET
 
 leituraTeclado:
@@ -118,7 +117,6 @@ finish:
 	RET
 	
 lcd_init:
-
 	CLR RS		
 
 ; function set	
@@ -185,7 +183,6 @@ lcd_init:
 
 	CALL delay		; wait for BF to clear
 	RET
-
 
 
 sendCharacter:
