@@ -40,7 +40,7 @@ MAIN:
 ;posiciona novamente no primeiro espaço para a senha
 		MOV A, #06h ;centralizado
 		ACALL posicionaCursor
-		MOV R0, #4 ;4 repeticoes pq senha tem 4 digitos
+		MOV R3, #4 ;4 repeticoes pq senha tem 4 digitos
      ESPERA_VE_PRESSIONADO:
 			ACALL leituraTeclado
 			JNB F0, ESPERA_VE_PRESSIONADO  ;if F0 is clear, jump to ROTINA	
@@ -50,7 +50,7 @@ MAIN:
 			MOV A, @R0        
 			ACALL sendCharacter
 			CLR F0
-		DJNZ R0, ESPERA_VE_PRESSIONADO ;DECREMENTA R0 E VOLTA
+		DJNZ R3, ESPERA_VE_PRESSIONADO ;DECREMENTA R0 E VOLTA
 	JMP MAIN
 
 TELA_INICIAL:
