@@ -28,7 +28,7 @@ LJMP MAIN
 
 ;o que aparece no display da tela inicial para pessoa digitar a senha e aparecer nos ____
 ESPACOSENHA:
-  DB "";senha com 4 digitos
+  DB "____";senha com 4 digitos
   DB 00h ;declara string, ler ate final
 BLOQUEADO:
   DB "Bloqueado!"
@@ -88,9 +88,35 @@ MAIN:
          INC R1
         DJNZ R3, COMPARA ;LOOP 4X 
 ;"Menu"
-
+	LCALL TELA_MENU
+    MOV R3, #31H
+    MOV R4, #32H 
+	 ESPERA_VE_PRESSIONADO2:
+			ACALL leituraTeclado
+			JNB F0, ESPERA_VE_PRESSIONADO2  ;if F0 is clear, jump to ROTINA	
+        	MOV A, #40h
+			ADD A, R0
+			MOV R0, A
+			MOV A, @R0  
+            CJNE A, 03H,COMPARANDO2
+            ;SE O USUARIO DIGITOU 1
+            
+		    CLR F0
+        
 	JMP MAIN
 
+COMPARANDO2:;AQUI É SE O NUMERO NÃO FOR UM
+	CJNE A, 04H, ESPERA_VE_PRESSIONADO2
+;SE VIER PRA CA, QUER DIZER QUE O USUARIO DIGITOU 2
+    LCALL clearDisplay
+    MOV A, #03h ;centraliza
+	ACALL posicionaCursor 
+	MOV DPTR,#TCHAU ;chama o que será escrito
+	ACALL escreveStringROM
+	CALL delay
+    LCALL clearDisplay
+    CLR F0;NECESSARIO, POIS NESSE CASO NÃO VOLTA PARA MAIN
+	LJMP MAIN
 ERRADO:
 	;MENSAGEM DE SENHA ERRADA NO LCD E VOLTA PRO INICIO
     LCALL TELA_ERRO
@@ -120,6 +146,18 @@ TELA_ERRO:
 	CALL delay
     LCALL clearDisplay
 	RET
+
+TELA_MENU:
+	LCALL clearDisplay
+	MOV A, #00h ;centraliza
+	ACALL posicionaCursor 
+	MOV DPTR,#MUDAR_SENHA ;chama o que será escrito
+	ACALL escreveStringROM
+ 	MOV A, #40h ;posiciona para a linha seguinte
+    ACALL posicionaCursor ;chama cursor para comecar a escrever no endereço 43h
+	MOV DPTR,#SAIR
+    ACALL escreveStringROM ;escreve o que ta no BLOQUEADO
+ 	RET
 
 leituraTeclado:
 	MOV R0, #0		
