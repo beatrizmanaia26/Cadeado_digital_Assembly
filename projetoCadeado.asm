@@ -76,10 +76,22 @@ MOV 40H, #'#'
              MOV @R1, A ;coloca o resultado de a no endereco de r1 
              INC R1 ;incrementa r1 para ir pro prox endereço da senha guardada
              MOV A, R7      
-            
- 			ACALL sendCharacter 
+             
+ 		   	ACALL sendCharacter 
  			CLR F0
- 		DJNZ R3, ESPERA_VE_PRESSIONADO ;DECREMENTA R0 E VOLTA
+ 		DJNZ R3, ESPERA_VE_PRESSIONADO ;DECREMENTA R3 E VOLTA
+	;Parte para imitar um enter;(#23H)
+		MOV R3, #23H
+		ESPERA_VE_PRESSIONADO_ENTER:
+            CLR A
+ 			ACALL leituraTeclado
+			JNB F0, ESPERA_VE_PRESSIONADO_ENTER 
+         	MOV A, #40h
+ 			ADD A, R0
+ 			MOV R0, A
+ 			MOV A, @R0  
+			CLR F0
+            CJNE A, 03H,ESPERA_VE_PRESSIONADO_ENTER
       ;Parte onde comparamos a senha salva com os digitados pelo usuario 
          MOV R3, #4 ;loop 4x
          MOV R0, #30H ;valor 30 para ir ao endereço 30 e comparar
@@ -99,7 +111,7 @@ MOV 40H, #'#'
      MOV R3, #31H
      MOV R4, #32H  
       	 ESPERA_VE_PRESSIONADO2:
-       CLR A
+            CLR A
  			ACALL leituraTeclado
 			JNB F0, ESPERA_VE_PRESSIONADO2  ;if F0 is clear, jump to ROTINA	
          	MOV A, #40h
@@ -139,6 +151,12 @@ MOV 40H, #'#'
             JMP MENU
        
  	JMP MAIN
+
+	 ERRADO:
+      	;MENSAGEM DE SENHA ERRADA NO LCD E VOLTA PRO INICIO
+    LCALL TELA_ERRO
+    MOV R5, #02H
+    LJMP MAIN
        
       COMPARANDO2:;AQUI É SE O NUMERO NÃO FOR UM
  	CJNE A, 04H, ESPERA_VE_PRESSIONADO2
@@ -164,11 +182,6 @@ MOV 40H, #'#'
        
       ;telas
 ;tela de erro tem que ta no comeco se nao nao da para ser chamada
- ERRADO:
-      	;MENSAGEM DE SENHA ERRADA NO LCD E VOLTA PRO INICIO
-    LCALL TELA_ERRO
-    MOV R5, #02H
-    LJMP MAIN
 
       TELA_SENHASALVA:
       	 LCALL clearDisplay
