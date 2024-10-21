@@ -90,7 +90,7 @@ MOV 40H, #'#'
  			ADD A, R0
  			MOV R0, A
  			MOV A, @R0  
-			CLR F0
+			CLR F0 ;coloca clr f0 para dar certo
             CJNE A, 03H,ESPERA_VE_PRESSIONADO_ENTER
       ;Parte onde comparamos a senha salva com os digitados pelo usuario 
          MOV R3, #4 ;loop 4x
@@ -125,8 +125,8 @@ MOV 40H, #'#'
                   ;posiciona novamente no primeiro espaço para a nova senha
 			    MOV A, #45h ;centralizado
  			   	ACALL posicionaCursor
-                  ;LOOP para sobreescrever senha padrao com senha nova
-             MOV R1, #30H ;onde vai sobrescrever a senha antiga pela nova
+                  ;LOOP para guardar senha nova
+             MOV R1, #50H ;onde vai guardar senha nova
 			      MOV R2, #4;4 repeticoes pq senha tem 4 digitos 
                    ;le valor que pessoa digitou para guardar na memoria
            			ESPERA_VE_PRESSIONADO_MENU1:
@@ -146,7 +146,31 @@ MOV 40H, #'#'
 						   ACALL sendCharacter
 							CLR F0
 					  DJNZ R2, ESPERA_VE_PRESSIONADO_MENU1 ;loop, decrementa R2 para rodar 4x
-            
+             ;espera pessoa clicar no # (23h) para sobreescrever senha antiga pela nova
+             MOV R3, #23H
+             ESPERA_VE_PRESSIONADO_ENTER2:
+                CLR A
+ 		       	ACALL leituraTeclado
+				JNB F0, ESPERA_VE_PRESSIONADO_ENTER2
+         		MOV A, #40h
+ 				ADD A, R0
+ 				MOV R0, A
+ 				MOV A, @R0  
+					CLR F0 ;coloca clr f0 para dar certo
+           			CJNE A, 03H,ESPERA_VE_PRESSIONADO_ENTER2
+                ;se termos do cjne tiver igual, faz o que ta aqui (passa senha nova pro endereço da antiga
+                ;sobreescrevendo a antiga pela nova
+                CLR A
+                MOV R0, #30H
+                MOV R1, #50H
+                MOV R5, #4
+                MUDAR_SENHA_DE_ENDERECO:
+                    MOV A, @R1; coloca o que ta no endereço do R1 pro A
+                    MOV @R0, A ;passa o que ta no a para o que ta no endereço de R1
+                    INC R0
+                    INC R1
+                DJNZ R5, MUDAR_SENHA_DE_ENDERECO
+
             LCALL TELA_SENHASALVA
             JMP MENU
        
