@@ -459,30 +459,6 @@ MOV 40H, #'#'
  	CALL delay			; wait for BF to clear
  	RET
        
-       
-      ;Retorna o cursor para primeira posição sem limpar o display
-      retornaCursor:
- 	CLR RS	
- 	CLR P1.7		; |
- 	CLR P1.6		; |
- 	CLR P1.5		; |
- 	CLR P1.4		; | high nibble set
-       
- 	SETB EN		; |
- 	CLR EN		; | negative edge on E
-       
-	CLR P1.7		; |
-	CLR P1.6		; |
- 	SETB P1.5		; |
- 	SETB P1.4		; | low nibble set
-       
- 	SETB EN		; |
- 	CLR EN		; | negative edge on E
-       
- 	CALL delay		; wait for BF to clear
- 	RET
-       
-       
       ;Limpa o display
       clearDisplay:
  	CLR RS	
