@@ -50,15 +50,45 @@ seguem a mesma lógica da função “TELA_SENHASALVA”, só muda a quantidade 
 
 ![codigo1](./imagensReadMe/c6.png)
 
-## função TELA_MENU: **tem a mesma lógica que as demais telas, porém nela há um código responsável por esperar para saber se o motor já fez uma rotação completa no sentido anti-horário, rotação essa que ocorre quando a pessoa acerta a senha, antes de aparecer o menu no display LCD.**
+### função TELA_MENU: **tem a mesma lógica que as demais telas, porém nela há um código responsável por esperar para saber se o motor já fez uma rotação completa no sentido anti-horário, rotação essa que ocorre quando a pessoa acerta a senha, antes de aparecer o menu no display LCD.**
 
 Após limpar o display, o código verifica se houve uma rotação completa para, somente após isso, aparecer o menu no display. O código que verifica a rotação também é responsável por finalizá-la caso ela já tenha sido realizada em uma volta.
 
 ![codigo1](./imagensReadMe/c7.png)
 
-## função leituraTeclado: **é responsável por fazer uma varredura matricial, ela escaneia as linhas do KeyPad para identificar qual tecla foi pressionada.**
+### função leituraTeclado: **é responsável por fazer uma varredura matricial, ela escaneia as linhas do KeyPad para identificar qual tecla foi pressionada.**
 
 ![codigo1](./imagensReadMe/c8.png)
 
-## função finish: e finish2: **são somente um retorno**
+### função finish: e finish2: **são somente um retorno**
+
+
+### função lcd_init: é responsável por inicializar o display LCD. Ela é necessária para que possamos escrever no display LCD 
+
+![codigo1](./imagensReadMe/c11.png)
+![codigo1](./imagensReadMe/c12.png)
+
+### função sendCharacter: envia um caractere de 8 bits para um display LCD, ela é necessária para enviar cada um dos caracteres das palavras que desejamos escrever no display 
+
+![codigo1](./imagensReadMe/c13.png)
+
+### função clearDisplay: é responsável por limpar o display LCD por completo, ou seja, limpar todas as portas que ele usa.
+
+![codigo1](./imagensReadMe/c14.png)
+
+### função delay: é responsável por atrasar a execução, ela faz isso ao criar um loop com 50 iterações 
+
+![codigo1](./imagensReadMe/c15.png)
+
+## Funcionamento:
+Para que o código dos commits funcione, é preciso utilizar o simulador de microcontrolador  8051 EdSim51DI (link para download fornecido na secção de referências). <br>
+Após colar o código dos commits no EdSim51DI, configure o “Update Freq.” para 100 (como mostra a imagem 1), com essa frequência, o código roda em uma velocidade agradável. <br>
+Ademais, dentro do EdSim51DI, utilizamos as ferramentas: Display LCD (imagem 2), motor (imagem 3) e KeyPad (imagem 4). <br>
+
+![codigo1](./imagensReadMe/img1.png) Imagem 1. <br>
+
+![codigo1](./imagensReadMe/img2.png) Imagem 2. <br>
+
+![codigo1](./imagensReadMe/img3.png) Imagem 3. <br>
+![codigo1](./imagensReadMe/img4.png) Imagem 4. <br>
 
