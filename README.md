@@ -22,12 +22,43 @@ Aqui criamos “labels” referentes a todos os textos que desejamos escrever no
 
 ![codigo1](./imagensReadMe/c3.png)
 
-### função MAIN:###
-**É onde realizamos todo o projeto do cadeado de fato, toda a parte de interação como usuário e comparação do que ele digitou com o que está guardado na memória é feita aqui.**
+### função MAIN: **É onde realizamos todo o projeto do cadeado de fato, toda a parte de interação como usuário e comparação do que ele digitou com o que está guardado na memória é feita aqui.**
 
 Assim que o código entra nessa função, seu começo é responsável por organizar o que acontece:
 
--em primeiro lugar chama a função lcd_init para inicializar o display LCD, tornando possível a escrita nele
--chama a função TELA_INICIAL para escrever no display LCD a primeira tela do projeto 
--adiciona no contador A o valor específico para que a escrita no display para que o texto fique centralizado
--chama a função posicionaCursor para que, a senha digitada pelo usuário ocupe a posição guardada no registrador A, afinal o posicionaCursor utiliza esse acumulador. Dessa forma, o número digitado aparecerá no lugar dos “_ _ _ _” no display LCD
+-Em primeiro lugar chama a função lcd_init para inicializar o display LCD, tornando possível a escrita nele; <br>
+-Chama a função TELA_INICIAL para escrever no display LCD a primeira tela do projeto; <br>
+-Adiciona no contador A o valor específico para que a escrita no display para que o texto fique centralizado; <br>
+-Chama a função posicionaCursor para que, a senha digitada pelo usuário ocupe a posição guardada no registrador A, afinal o posicionaCursor utiliza esse acumulador. Dessa forma, o número digitado aparecerá no lugar dos “_ _ _ _” no display LCD;
+
+**No final do código tem todas as funções que chamamos durante o projeto. As primeiras funções são relacionadas as telas do display, ou seja, chamamos elas quando desejamos escrever no display após algo acontecer.**
+
+### função TELA_SENHASALVA: 
+
+-Chama a função responsável por limpar o display, ou seja, apagar tudo que está escrito nele; <br>
+-Posiciona o cursor no lugar onde desejamos escrever a label que chamaremos; <br>
+-Chama a função responsável por posicionar o cursor na posição desejada, mencionada acima; <br>
+-Move a label #SENHASALVA para o registrador DPTR para escrevê-la no display; <br>
+-Chama a função responsável por escrever a string da label #SENHASALVA; <br>
+-Limpa o display e retornamos; <br>
+
+![codigo1](./imagensReadMe/c5.png)
+
+### funções de tela “TELA_MUDARSENHA”, “TELA_INICIAL”, “TELA_ERRO”: 
+
+seguem a mesma lógica da função “TELA_SENHASALVA”, só muda a quantidade de texto que desejamos escrever no display
+
+![codigo1](./imagensReadMe/c6.png)
+
+## função TELA_MENU: **tem a mesma lógica que as demais telas, porém nela há um código responsável por esperar para saber se o motor já fez uma rotação completa no sentido anti-horário, rotação essa que ocorre quando a pessoa acerta a senha, antes de aparecer o menu no display LCD.**
+
+Após limpar o display, o código verifica se houve uma rotação completa para, somente após isso, aparecer o menu no display. O código que verifica a rotação também é responsável por finalizá-la caso ela já tenha sido realizada em uma volta.
+
+![codigo1](./imagensReadMe/c7.png)
+
+## função leituraTeclado: **é responsável por fazer uma varredura matricial, ela escaneia as linhas do KeyPad para identificar qual tecla foi pressionada.**
+
+![codigo1](./imagensReadMe/c8.png)
+
+## função finish: e finish2: **são somente um retorno**
+
