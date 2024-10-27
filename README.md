@@ -41,13 +41,13 @@ Assim que o código entra nessa função, seu começo é responsável por organi
 ###  função ESPERA_VE_PRESSIONADO: é responsável por esperar até que o usuário clique em alguma tecla e guarde esse valor no registrador R0, também realiza contas para que o valor que aparece no display seja exatamente o que ele pressionou 
 
 -Entra na função ESPERA_VE_PRESSIONADO <br>
--Chama a função leituraTeclado, para ler o que o usuário pressionou no KeyPad e armazenar no  endereço 60, afinal no display está a tela inicial, induzindo o usuário a digitar uma senha de 4 dígitos que deverá ser lida por essa linha;
--JNB faz com que só saia desse “loop” da função ESPERA_VE_PRESSIONADO: até a linha do JNB quando o usuário clicar em alguma tecla;
--(do “ESPERA_VE_PRESSIONADO: até o MOV A, @R0 fazemos a movimentação de valores para guardar o valor referente a tecla que o usuário clicou. Inicialmente, o valor que a pessoa clicou está em R0 então passamos desse registrador para A e de A para esse registrador, para que, no final, o acumulador tenha o valor que precisamos para prosseguir);
+-Chama a função leituraTeclado, para ler o que o usuário pressionou no KeyPad e armazenar no  endereço 60, afinal no display está a tela inicial, induzindo o usuário a digitar uma senha de 4 dígitos que deverá ser lida por essa linha;<br>
+-JNB faz com que só saia desse “loop” da função ESPERA_VE_PRESSIONADO: até a linha do JNB quando o usuário clicar em alguma tecla;<br>
+-(do “ESPERA_VE_PRESSIONADO: até o MOV A, @R0 fazemos a movimentação de valores para guardar o valor referente a tecla que o usuário clicou. Inicialmente, o valor que a pessoa clicou está em R0 então passamos desse registrador para A e de A para esse registrador, para que, no final, o acumulador tenha o valor que precisamos para prosseguir);<br>
 -(no trecho do MOV R7, A até  MOV A, R7, prosseguimos o código realizando contas para que, ao final desse trecho, o acumulador contenha exatamente o valor que a pessoa clicou no teclado);
--Chamamos a função sendCharacter para que ela envie ao display o valor que a pessoa digitou no teclado, calculado nas contas acima;
--É importante limpar o F0 para não dar problema, afinal, nessa parte do código  ele está sendo usado para verificar se alguma tecla foi pressionada;
--Por fim, utilizamos o DJNZ para fechar a lógica do loop mencionado acima, ele decrementa a quantidade de iterações, fazendo com que o bloco de código responsável por pegar o valor que o usuário digitou no teclado e fazer com que ele apareça no display ocorra para os 4 dígitos da senha;
+-Chamamos a função sendCharacter para que ela envie ao display o valor que a pessoa digitou no teclado, calculado nas contas acima;<br>
+-É importante limpar o F0 para não dar problema, afinal, nessa parte do código  ele está sendo usado para verificar se alguma tecla foi pressionada;<br>
+-Por fim, utilizamos o DJNZ para fechar a lógica do loop mencionado acima, ele decrementa a quantidade de iterações, fazendo com que o bloco de código responsável por pegar o valor que o usuário digitou no teclado e fazer com que ele apareça no display ocorra para os 4 dígitos da senha;<br>
 
 ![codigo1](./imagensReadMe/c_main2.png)
 
@@ -110,23 +110,45 @@ Após o usuário digitar a nova senha, a função ESPERA_VE_PRESSIONADO_ENTER2 �
 
 **Após a pessoa ter clicado no enter, a senha que ela digitou e que foi guardada nos endereços a partir do endereço 50h serão passadas para os endereços a partir do endereço 30h, sobrescrevendo a senha de fábrica.
 
--Limpamos o acumulador A pois  usaremos;
--Movemos para R0 o valor 30h pois é a partir desse endereço que escreveremos a nova senha;
--Movemos o R1 o valor 50h pois é a partir desse endereço que a nova senha foi escrita;
--Movemos para o R5 o 4 pois faremos 4 iterações entre os endereços descritos acima para mudar a senha de lugar;
+-Limpamos o acumulador A pois  usaremos;<br>
+-Movemos para R0 o valor 30h pois é a partir desse endereço que escreveremos a nova senha;<br>
+-Movemos o R1 o valor 50h pois é a partir desse endereço que a nova senha foi escrita;<br>
+-Movemos para o R5 o 4 pois faremos 4 iterações entre os endereços descritos acima para mudar a senha de lugar;<br>
 
-**A função MUDAR-SENHA_DE_ENDEREÇO  faz com que os valores guardados  partir do endereço 50h sejam escritos nos endereços a partir do endereço 30h, onde a senha antiga se encontra
+**A função MUDAR_SENHA_DE_ENDEREÇO  faz com que os valores guardados  partir do endereço 50h sejam escritos nos endereços a partir do endereço 30h, onde a senha antiga se encontra
 
--Para isso movemos para a o que está no endereço do R1;
--Passamos para o endereço de R0 o que esta no A;
--Incrementamos R0;
--Incrementamos R1 para fazer essa sobrescrita de senha em para todos os 4 endereços;
--Decrementamos R5 para continuarmos realizando a função 4 vezes voltamos para a função;
--Após passarmos o endereço de lugar chamamos a função para mostrar no display a mensagem de senha salva;
--Voltamos para o menu para continuarmos;
--JMP main:loop;
+-Para isso movemos para a o que está no endereço do R1;<br>
+-Passamos para o endereço de R0 o que esta no A;<br>
+-Incrementamos R0;<br>
+-Incrementamos R1 para fazer essa sobrescrita de senha em para todos os 4 endereços;<br>
+-Decrementamos R5 para continuarmos realizando a função 4 vezes voltamos para a função;<br>
+-Após passarmos o endereço de lugar chamamos a função para mostrar no display a mensagem de senha salva;<br>
+-Voltamos para o menu para continuarmos;<br>
+-JMP main:loop;<br>
 
 ![codigo1](./imagensReadMe/c_main7.png)
+
+### A função ERRADO:
+
+-Chama a função de tela responsável por fazer aparecer a mensagem de erro no display;<br>
+-Move 2h para R5 para teste, ver se a função erro funciona mesmo<br>
+-Quando acaba, retorna para a função MAIN;<br>
+
+![codigo1](./imagensReadMe/c_main8.png)
+
+### função COMPARANDO2: é responsável pelo que ocorre quando o usuário clica na opção 2 do menu, nela, primeiro fazemos o motor girar no sentido horário
+
+-Chamamos a função clearDisplay para limpar o display;
+-Movemos 03h para o A, pois é nessa posição que desejamos escrever a próxima mensagem;
+-Entramos na função EsperaRotacaoAnti: que é responsável por esperar que o motor gire voltas completas e, após isso, pará-lo;
+-Chamamos a função posiconaCursor para começar a escrever na posição determinada acima;
+-Chamamos a string que será escrita (tchau);
+-Chamamos a função responsável por escrever a escrita predeterminada;
+-Chamamos a função de delay para retardar esse processo;
+-Chamamos a função de limpar o display;
+-Limpamos F0 para não voltarmos para o código acima;
+
+![codigo1](./imagensReadMe/c_main9.png)
 
 **No final do código tem todas as funções que chamamos durante o projeto. As primeiras funções são relacionadas as telas do display, ou seja, chamamos elas quando desejamos escrever no display após algo acontecer.**
 
