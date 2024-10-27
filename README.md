@@ -85,11 +85,48 @@ Caso toda a senha digitada pelo usuário esteja correta, fazemos o motor girar e
 
 ### função MENU: é responsável mostrar ao usuário suas opções de ação e executar essas opções
 
+-No seu início, ela chama a função tela menu para mostrar as opções de escolha do usuário no display LCD;<br>
+-Movemos para o R3 o valor de #31H, que corresponde ao 1 do teclado;<br>
+-Movemos para o R4 o valor de #32H, , que corresponde ao 2 do teclado (ambas são opcoes do menu);<br>
 
+###  função ESPERA_VE_PRESSIONADO2: aguarda para ver qual número dentre o das duas opções o usuário escolheu, p levando para as respectivas execuções de código
 
+-A primeira parte é igual ao ESPERA_VE_PRESSIONADO:<br>
+-O CJNE compara o valor do 3h e A,caso eles sejam diferentes, ou seja, a pessoa clicou no 2, ela é levada para a função COMPARANDO2:<br>
+-No acumulador A está o que a pessoa digitou e no 03H (que é o mesmo que R3) esta o numero 1),caso os valores sejam iguais, ou seja, se a pessoa clicou em 1 no teclado ele chama a função de TELA_MUDARSENHA;<br>
+-Limpa o F0 pois voltaremos a precisar verificar qual tecla será pressionada;<br>
+-Movemos para A a posição que desejamos começar a escrever no display LCD;<br>
+-Chamamos a função para posicionar o cursor no local determinado acima;<br>
+-Movemos o 50h para o A pois é apartir desse endereço que guardaremos a senha digitada pelo usuário até que ele clique no enter (#);<br>
+-Movemos 4 para o R2 para servir como um loop pagar e guardarmos os 4 valores pressionados pelo usuário nos endereços descritos acima;<br>
+-Entramos na função ESPERA_VE_PRESSIONADO_MENU1: que é responsável por esperar o usuário digitar os 4 dígitos da nova senha e salvá-los nos endereços a partir do endereço 50h;<br>
+-Essa função inteira é a mesma lógica do ESPERA_VE_PRESSIONADO, só muda o registrador que armazenamos e o endereço de memória onde salvamos a senha digitada;<br>
 
 ![codigo1](./imagensReadMe/c_main5.png)
- 
+
+Após o usuário digitar a nova senha, a função ESPERA_VE_PRESSIONADO_ENTER2 é a mesma lógica da função ESPERA_VE_PRESSIONADO_ENTER. 
+
+![codigo1](./imagensReadMe/c_main6.png)
+
+**Após a pessoa ter clicado no enter, a senha que ela digitou e que foi guardada nos endereços a partir do endereço 50h serão passadas para os endereços a partir do endereço 30h, sobrescrevendo a senha de fábrica.
+
+-Limpamos o acumulador A pois  usaremos;
+-Movemos para R0 o valor 30h pois é a partir desse endereço que escreveremos a nova senha;
+-Movemos o R1 o valor 50h pois é a partir desse endereço que a nova senha foi escrita;
+-Movemos para o R5 o 4 pois faremos 4 iterações entre os endereços descritos acima para mudar a senha de lugar;
+
+**A função MUDAR-SENHA_DE_ENDEREÇO  faz com que os valores guardados  partir do endereço 50h sejam escritos nos endereços a partir do endereço 30h, onde a senha antiga se encontra
+
+-Para isso movemos para a o que está no endereço do R1;
+-Passamos para o endereço de R0 o que esta no A;
+-Incrementamos R0;
+-Incrementamos R1 para fazer essa sobrescrita de senha em para todos os 4 endereços;
+-Decrementamos R5 para continuarmos realizando a função 4 vezes voltamos para a função;
+-Após passarmos o endereço de lugar chamamos a função para mostrar no display a mensagem de senha salva;
+-Voltamos para o menu para continuarmos;
+-JMP main:loop;
+
+![codigo1](./imagensReadMe/c_main7.png)
 
 **No final do código tem todas as funções que chamamos durante o projeto. As primeiras funções são relacionadas as telas do display, ou seja, chamamos elas quando desejamos escrever no display após algo acontecer.**
 
@@ -158,8 +195,8 @@ Ademais, dentro do EdSim51DI, utilizamos as ferramentas: Display LCD (imagem 2),
 
 ![codigo1](./imagensReadMe/img2.png) <br> Imagem 2. 
 
-![codigo1](./imagensReadMe/img3.png) <br> Imagem 3.
-![codigo1](./imagensReadMe/img4.png) <br> Imagem 4. 
+![codigo1](./imagensReadMe/img3.png) Imagem 3. <br>
+![codigo1](./imagensReadMe/img4.png) Imagem 4. 
 
 ## Referências:
 
@@ -174,6 +211,5 @@ O único desafio encontrado foi solucionar um problema que, no display LCD apare
 ## Fluxograma:
 
 
-## Simulação: 
-  [Assistir vídeo sobre o projeto](https://www.youtube.com/watch?v=8Y3Y5MJiHyA&t=4s)
+## Simulação: [Assistir vídeo sobre o projeto](https://www.youtube.com/watch?v=8Y3Y5MJiHyA&t=4s)
 
