@@ -232,6 +232,7 @@ O único desafio encontrado foi solucionar um problema que, no display LCD apare
 
 ## Fluxograma:
 
+![codigo1](./imagensReadMe/Fluxograma.png) Imagem 4. 
 
 ## Simulação: [Assistir vídeo sobre o projeto](https://www.youtube.com/watch?v=8Y3Y5MJiHyA&t=4s)
 
