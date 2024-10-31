@@ -224,6 +224,7 @@ Ademais, dentro do EdSim51DI, utilizamos as ferramentas: Display LCD (imagem 2),
 
 -Download do EdSim51DI: https://edsim51.com/ <br>
 -Materiais de referência para o projeto foram fornecidos durante as aulas de arquitetura de computadores no Centro Universitário FEI. <br>
+-Utilizamos o LucidChart para fazer o fluxograma: https://lucid.app/lucidchart/f7669245-5012-4649-8332-2cde1fabfc73/edit?viewport_loc=100%2C115%2C1093%2C1751%2C0_0&invitationId=inv_fea780c6-4100-47de-b4ec-de6b16bcd515
 
 ## Conclusão:
 
